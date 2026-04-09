@@ -16,16 +16,15 @@ public class UserService {
     private final IUserRepository userRepository;
 
     @Transactional
-    public void createUser(UserRequestDto create) {
+    public UserEntity save(UserRequestDto create) {
         userRepository.findByEmail(create.email())
                 .ifPresent(user -> {
                     throw new EmailAlreadyExistsException(
                             String.format("Email %s already exists", create.email())
                     );
                 });
-
         UserEntity user = UserMapper.toEntity(create);
-        userRepository.save(user);
+        return userRepository.save(user);
     }
 }
 
