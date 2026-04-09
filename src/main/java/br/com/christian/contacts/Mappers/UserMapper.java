@@ -24,7 +24,7 @@ public class UserMapper {
         );
     }
 
-    public static List<UserResponseDto> listAll(List<UserEntity> users) {
+    public static List<UserResponseDto> toResponseList(List<UserEntity> users) {
         return users
                 .stream()
                 .map(UserMapper::toResponse)

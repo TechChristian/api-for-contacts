@@ -4,7 +4,12 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
+import java.util.UUID;
+
 public record ContactsRequestDto (
+        @NotBlank(message = "User ID is required")
+        UUID userID,
+
         @NotBlank(message = "Full name is required")
         String fullname,
 
