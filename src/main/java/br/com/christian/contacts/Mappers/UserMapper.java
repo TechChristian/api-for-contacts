@@ -18,6 +18,7 @@ public class UserMapper {
 
     public static UserResponseDto toResponse(UserEntity user) {
         return new UserResponseDto(
+                user.getId(),
                 user.getUsername(),
                 user.getEmail(),
                 user.getRole()

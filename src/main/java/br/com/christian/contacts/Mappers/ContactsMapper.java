@@ -18,6 +18,7 @@ public class ContactsMapper {
         var usersDto = contacts.getUsers()
                 .stream()
                 .map(user -> new UserResponseDto(
+                        user.getId(),
                         user.getUsername(),
                         user.getEmail(),
                         user.getRole()
