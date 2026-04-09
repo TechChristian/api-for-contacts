@@ -4,8 +4,8 @@ package br.com.christian.contacts.database.model;
 import br.com.christian.contacts.database.enums.Roles;
 import jakarta.persistence.*;
 import lombok.*;
-
-import java.lang.reflect.Type;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -32,4 +32,12 @@ public class UserEntity {
     @Column(name = "role")
     @Enumerated(EnumType.STRING)
     private Roles role = Roles.USER;
+
+   @ManyToMany
+    @JoinTable(
+            name = "user_contacts",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "contact_id")
+    )
+    private Set<ContactsEntity> contacts = new HashSet<>();
 }

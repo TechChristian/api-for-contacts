@@ -3,14 +3,13 @@ package br.com.christian.contacts.database.model;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
 @Table(name = "contacts")
 public class ContactsEntity {
 
@@ -24,5 +23,9 @@ public class ContactsEntity {
     private String email;
 
     @Column(name = "telefone", nullable = false)
-    private String phone;
+    private Long phone;
+
+    @ManyToMany
+    private Set<UserEntity> users = new HashSet<>();
+
 }
