@@ -16,5 +16,4 @@ public record UserRequestDto(
         @NotNull
         @Size(min = 6, max = 12, message = "Password must be between 6 and 12 characters long")
         String password
-) {
-}
+) { }

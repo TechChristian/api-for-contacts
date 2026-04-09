@@ -1,5 +1,4 @@
 package br.com.christian.contacts.Mappers;
-
 import br.com.christian.contacts.database.model.ContactsEntity;
 import br.com.christian.contacts.dto.request.ContactsRequestDto;
 import br.com.christian.contacts.dto.response.ContactsResponseDto;
