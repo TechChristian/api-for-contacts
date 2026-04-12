@@ -9,7 +9,6 @@ import br.com.christian.contacts.dto.request.ContactsRequestDto;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.apache.coyote.BadRequestException;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
@@ -17,7 +16,6 @@ import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
-
 public class ContactsService {
     private final IContactsRepository contactsRepository;
     private final IUserRepository userRepository;
@@ -28,6 +26,9 @@ public class ContactsService {
         UserEntity user = userRepository.findById(create.userID()).orElseThrow(
                 () -> new EntityNotFoundException("User not found with id: " + create.userID())
         );
+        if(contactsRepository.findByPhone(create.phone()).isPresent()){
+            throw new IllegalArgumentException("Contact with phone number already exists: " + create.phone());
+        }
 
         ContactsEntity contacts = ContactsMapper.toEntity(create);
         Set<UserEntity> users = new HashSet<>();

@@ -23,7 +23,7 @@ public class ContactsEntity {
     private String email;
 
     @Column(name = "telefone", nullable = false)
-    private Long phone;
+    private String phone;
 
     @ManyToMany
     private Set<UserEntity> users = new HashSet<>();

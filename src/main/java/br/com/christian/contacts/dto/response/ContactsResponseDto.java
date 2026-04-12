@@ -7,7 +7,7 @@ public record ContactsResponseDto(
 
         String email,
 
-        long phone,
+        String phone,
 
         List<UserResponseDto> users
 ) {
