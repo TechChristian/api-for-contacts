@@ -26,7 +26,7 @@ public class ContactsService {
         UserEntity user = userRepository.findById(create.userID()).orElseThrow(
                 () -> new EntityNotFoundException("User not found with id: " + create.userID())
         );
-        if(contactsRepository.findByPhone(create.phone()).isPresent()){
+        if(contactsRepository.findByPhoneAndUsers_Id(create.phone(), create.userID()).isPresent()){
             throw new IllegalArgumentException("Contact with phone number already exists: " + create.phone());
         }
 

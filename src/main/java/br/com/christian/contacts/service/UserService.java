@@ -8,6 +8,9 @@ import br.com.christian.contacts.exception.EmailAlreadyExistsException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 
@@ -24,6 +27,11 @@ public class UserService {
                 });
         UserEntity user = UserMapper.toEntity(create);
         return userRepository.save(user);
+    }
+
+    @Transactional
+    public List<UserEntity> listUsers(){
+        return userRepository.findAll();
     }
 }
 
