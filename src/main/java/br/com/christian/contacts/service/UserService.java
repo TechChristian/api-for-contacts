@@ -30,7 +30,7 @@ public class UserService {
     }
 
     @Transactional
-    public List<UserEntity> listUsers(){
+    public List<UserEntity> listUsers() {
         return userRepository.findAll();
     }
 }

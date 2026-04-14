@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Service
@@ -36,5 +37,10 @@ public class ContactsService {
         contacts.setUsers(users);
 
         return contactsRepository.save(contacts);
+    }
+
+    @Transactional
+    public List<ContactsEntity> listContacts(){
+        return contactsRepository.findAll();
     }
 }

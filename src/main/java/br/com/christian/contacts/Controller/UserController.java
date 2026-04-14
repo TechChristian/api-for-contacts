@@ -26,6 +26,7 @@ public class UserController {
                 UserMapper.toResponse(user);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
+
     @GetMapping
     public ResponseEntity<List<UserResponseDto>> listAllUsers(){
         List<UserEntity> users = userService.listUsers();
