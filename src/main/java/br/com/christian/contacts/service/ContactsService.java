@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -40,7 +41,13 @@ public class ContactsService {
     }
 
     @Transactional
-    public List<ContactsEntity> listContacts(){
+    public ContactsEntity searchByPhoneAndUser(String phone, UUID id){
+        return contactsRepository.findByPhoneAndUsers_Id(phone,id)
+                .orElseThrow(() -> new EntityNotFoundException("Contact not found with phone: " + phone));
+    }
+
+    @Transactional
+    public List<ContactsEntity> allContacts(){
         return contactsRepository.findAll();
     }
 }

@@ -12,10 +12,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("v1/contacts")
 @RequiredArgsConstructor
+
 public class ContactsController {
     private final ContactsService contactsService;
 
@@ -29,9 +31,18 @@ public class ContactsController {
 
     }
 
+    @GetMapping("/{phone}/{id}")
+    public ResponseEntity<ContactsResponseDto> searchByPhoneContacts(
+            @PathVariable String phone,
+            @PathVariable UUID id) {
+        ContactsEntity contacts = contactsService.searchByPhoneAndUser(phone, id);
+        return ResponseEntity.status(HttpStatus.OK).body(ContactsMapper.toResponse(contacts));
+    }
+
+
     @GetMapping
-    public ResponseEntity<List<ContactsResponseDto>> listAllContacts(){
-        List<ContactsEntity> contacts = contactsService.listContacts();
-        return ResponseEntity.status(HttpStatus.OK).body(ContactsMapper.toResponseList(contacts));
+    public ResponseEntity<List<ContactsResponseDto>> listAllContacts() {
+        List<ContactsEntity> contacts = contactsService.allContacts();
+        return ResponseEntity.ok(ContactsMapper.toResponseList(contacts));
     }
 }
