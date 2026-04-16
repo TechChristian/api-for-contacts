@@ -1,6 +1,7 @@
 package br.com.christian.contacts.database.repository;
 
 import br.com.christian.contacts.database.model.UserEntity;
+import org.apache.catalina.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

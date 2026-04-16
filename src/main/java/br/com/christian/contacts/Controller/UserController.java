@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("v1/users")
@@ -25,6 +26,14 @@ public class UserController {
         UserResponseDto response =
                 UserMapper.toResponse(user);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<UserResponseDto> searchUserById(@PathVariable UUID id){
+       UserEntity user = userService.listUserById(id);
+        UserResponseDto response =
+                UserMapper.toResponse(user);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
     @GetMapping

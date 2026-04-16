@@ -53,6 +53,7 @@ public class ContactsService {
                 .orElseThrow(() -> new EntityNotFoundException("Contact not found with phone: " + phone));
     }
 
+    //* Regra de Negocio : caso a lista esteja vazia é lancado um erro.
     @Transactional
     public List<ContactsEntity> searchForContactsById(UUID id){
 

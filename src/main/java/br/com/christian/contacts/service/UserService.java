@@ -5,12 +5,13 @@ import br.com.christian.contacts.database.model.UserEntity;
 import br.com.christian.contacts.database.repository.IUserRepository;
 import br.com.christian.contacts.dto.request.UserRequestDto;
 import br.com.christian.contacts.exception.EmailAlreadyExistsException;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -28,6 +29,13 @@ public class UserService {
                 });
         UserEntity user = UserMapper.toEntity(create);
         return userRepository.save(user);
+    }
+
+    @Transactional
+    public UserEntity listUserById(UUID id){
+      return userRepository.findById(id).orElseThrow(
+                () -> new EntityNotFoundException(String.format("User with id %s not found", id))
+        );
     }
 
     @Transactional
