@@ -6,7 +6,9 @@ import br.com.christian.contacts.database.model.UserEntity;
 import br.com.christian.contacts.database.repository.IContactsRepository;
 import br.com.christian.contacts.database.repository.IUserRepository;
 import br.com.christian.contacts.dto.request.ContactsRequestDto;
+import br.com.christian.contacts.exception.EmailAlreadyExistsException;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.persistence.NonUniqueResultException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -28,8 +30,13 @@ public class ContactsService {
         UserEntity user = userRepository.findById(create.userID()).orElseThrow(
                 () -> new EntityNotFoundException("User not found with id: " + create.userID())
         );
+
         if(contactsRepository.findByPhoneAndUsers_Id(create.phone(), create.userID()).isPresent()){
             throw new IllegalArgumentException("Contact with phone number already exists: " + create.phone());
+        }
+
+        if(contactsRepository.findByEmailAndUsers_Id(create.email(), create.userID()).isPresent()){
+            throw new NonUniqueResultException("Contact with email already exists: " + create.email());
         }
 
         ContactsEntity contacts = ContactsMapper.toEntity(create);
