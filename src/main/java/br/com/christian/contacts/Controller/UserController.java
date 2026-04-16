@@ -32,4 +32,5 @@ public class UserController {
         List<UserEntity> users = userService.listUsers();
         return ResponseEntity.status(HttpStatus.OK).body(UserMapper.toResponseList(users));
     }
+
 }

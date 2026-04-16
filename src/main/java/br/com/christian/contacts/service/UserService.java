@@ -8,6 +8,7 @@ import br.com.christian.contacts.exception.EmailAlreadyExistsException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 
 import java.util.List;
 
@@ -33,5 +34,6 @@ public class UserService {
     public List<UserEntity> listUsers() {
         return userRepository.findAll();
     }
+
 }
 
