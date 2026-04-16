@@ -49,15 +49,11 @@ public class ContactsService {
     @Transactional
     public List<ContactsEntity> searchForContactsById(UUID id){
 
-        if(id == null){
-            throw new IllegalArgumentException("ID cannot be null");
-        }
-
         UserEntity user = userRepository.findById(id).orElseThrow(
                 () -> new EntityNotFoundException("User not found with id: " + id)
         );
 
-        List<ContactsEntity> contacts = contactsRepository.allContactsById(id);
+        List<ContactsEntity> contacts = contactsRepository.findByUsers_Id(id);
 
        if(contacts.isEmpty()){
             throw new EntityNotFoundException("No contacts found for user with id: " + id);
@@ -65,6 +61,7 @@ public class ContactsService {
 
         return contacts;
     }
+
     @Transactional
     public List<ContactsEntity> allContacts(){
         return contactsRepository.findAll();

@@ -28,15 +28,20 @@ public class ContactsController {
         ContactsResponseDto response =
                 ContactsMapper.toResponse(contacts);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
-
     }
 
     @GetMapping("/{phone}/{id}")
-    public ResponseEntity<ContactsResponseDto> searchByPhoneContacts(
+    public ResponseEntity<ContactsResponseDto> searchPhoneByContacts(
             @PathVariable String phone,
             @PathVariable UUID id) {
         ContactsEntity contacts = contactsService.searchByPhoneAndUser(phone, id);
         return ResponseEntity.status(HttpStatus.OK).body(ContactsMapper.toResponse(contacts));
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<List<ContactsResponseDto>> searchContactsById(@PathVariable  UUID id){
+        List<ContactsEntity> contacts = contactsService.searchForContactsById(id);
+        return ResponseEntity.ok(ContactsMapper.toResponseList(contacts));
     }
 
 

@@ -11,5 +11,5 @@ public interface IContactsRepository extends JpaRepository<ContactsEntity, UUID>
 
     Optional<ContactsEntity> findByPhoneAndUsers_Id(String phone, UUID userId);
     Optional<ContactsEntity> findByPhone(String phone);
-    List<ContactsEntity> allContactsById(UUID id);
+    List<ContactsEntity> findByUsers_Id(UUID id);
 }
