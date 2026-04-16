@@ -25,7 +25,6 @@ public class ContactsEntity {
     @Column(name = "telefone", nullable = false)
     private String phone;
 
-    @ManyToMany
+    @ManyToMany(mappedBy = "contacts")
     private Set<UserEntity> users = new HashSet<>();
-
 }
