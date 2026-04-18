@@ -39,6 +39,16 @@ public class UserService {
     }
 
     @Transactional
+    public void deleteUser(UUID id){
+     UserEntity user = userRepository.findById(id).orElseThrow(
+                () -> new EntityNotFoundException(String.format("User with id %s not found", id))
+        );
+     userRepository.delete(user);
+    }
+
+
+
+    @Transactional
     public List<UserEntity> listUsers() {
         return userRepository.findAll();
     }

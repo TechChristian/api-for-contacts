@@ -29,17 +29,27 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<UserResponseDto> searchUserById(@PathVariable UUID id){
-       UserEntity user = userService.listUserById(id);
+    public ResponseEntity<UserResponseDto> searchUserById(@PathVariable UUID id) {
+        UserEntity user = userService.listUserById(id);
         UserResponseDto response =
                 UserMapper.toResponse(user);
-        return ResponseEntity.status(HttpStatus.OK).body(response);
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(response);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteUser(@PathVariable UUID id) {
+        userService.deleteUser(id);
+        return ResponseEntity.noContent().build();
     }
 
     @GetMapping
-    public ResponseEntity<List<UserResponseDto>> listAllUsers(){
+    public ResponseEntity<List<UserResponseDto>> listAllUsers() {
         List<UserEntity> users = userService.listUsers();
-        return ResponseEntity.status(HttpStatus.OK).body(UserMapper.toResponseList(users));
+        return ResponseEntity.
+                status(HttpStatus.OK)
+                .body(UserMapper.toResponseList(users));
     }
 
 }
