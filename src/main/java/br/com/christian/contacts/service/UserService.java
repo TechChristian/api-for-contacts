@@ -4,10 +4,14 @@ import br.com.christian.contacts.Mappers.UserMapper;
 import br.com.christian.contacts.database.model.UserEntity;
 import br.com.christian.contacts.database.repository.IUserRepository;
 import br.com.christian.contacts.dto.request.UserRequestDto;
+import br.com.christian.contacts.dto.request.UserUpdateDto;
+import br.com.christian.contacts.dto.response.UserResponseDto;
 import br.com.christian.contacts.exception.EmailAlreadyExistsException;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.apache.catalina.User;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -32,22 +36,34 @@ public class UserService {
     }
 
     @Transactional
-    public UserEntity listUserById(UUID id){
-      return userRepository.findById(id).orElseThrow(
+    public UserEntity listUserById(UUID id) {
+        return userRepository.findById(id).orElseThrow(
                 () -> new EntityNotFoundException(String.format("User with id %s not found", id))
         );
     }
 
     @Transactional
-    public void deleteUser(UUID id){
-     UserEntity user = userRepository.findById(id).orElseThrow(
+    public void deleteUser(UUID id) {
+        UserEntity user = userRepository.findById(id).orElseThrow(
                 () -> new EntityNotFoundException(String.format("User with id %s not found", id))
         );
-     userRepository.delete(user);
+        userRepository.delete(user);
     }
 
+    @Transactional
+    public UserEntity updateFieldsUser(UUID id, UserUpdateDto dto) {
+        UserEntity user = userRepository.findById(id).orElseThrow(
+                () -> new EntityNotFoundException(String.format("User with id %s not found", id))
+        );
 
-
+        if (dto.email() != null && !dto.email().isBlank()) {
+            user.setEmail(dto.email());
+        }
+        if(dto.username() != null && !dto.username().isBlank()) {
+            user.setUsername(dto.username());
+        }
+        return user;
+    }
     @Transactional
     public List<UserEntity> listUsers() {
         return userRepository.findAll();

@@ -2,7 +2,9 @@ package br.com.christian.contacts.Controller;
 
 import br.com.christian.contacts.Mappers.UserMapper;
 import br.com.christian.contacts.database.model.UserEntity;
+import br.com.christian.contacts.dto.request.MessageResponseDto;
 import br.com.christian.contacts.dto.request.UserRequestDto;
+import br.com.christian.contacts.dto.request.UserUpdateDto;
 import br.com.christian.contacts.dto.response.UserResponseDto;
 import br.com.christian.contacts.service.UserService;
 import jakarta.validation.Valid;
@@ -36,6 +38,14 @@ public class UserController {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(response);
+    }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<MessageResponseDto> updateFieldsUser(@PathVariable UUID id, @Valid @RequestBody UserUpdateDto dto) {
+        userService.updateFieldsUser(id, dto);
+        return ResponseEntity.ok(
+                new MessageResponseDto("User updated successfully")
+        );
     }
 
     @DeleteMapping("/{id}")
