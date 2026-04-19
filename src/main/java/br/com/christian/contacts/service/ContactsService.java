@@ -6,6 +6,8 @@ import br.com.christian.contacts.database.model.UserEntity;
 import br.com.christian.contacts.database.repository.IContactsRepository;
 import br.com.christian.contacts.database.repository.IUserRepository;
 import br.com.christian.contacts.dto.request.ContactsRequestDto;
+import br.com.christian.contacts.dto.response.ContactsUpdateDto;
+import br.com.christian.contacts.dto.response.UserUpdateDto;
 import br.com.christian.contacts.exception.EmailAlreadyExistsException;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.NonUniqueResultException;
@@ -68,6 +70,22 @@ public class ContactsService {
         }
         return contacts;
     }
+
+    @Transactional
+    public ContactsEntity updateFieldsContacts(UUID id, ContactsUpdateDto dto) {
+        ContactsEntity contacts = contactsRepository.findById(id).orElseThrow(
+                () -> new EntityNotFoundException("Contact not found with id: " + id)
+        );
+        if (dto.fullname() != null && !dto.fullname().isBlank()) {
+            contacts.setFullname(dto.fullname());
+        }
+        if (dto.email() != null && !dto.email().isBlank()) {
+            contacts.setEmail(dto.email());
+        }
+
+        return contacts;
+    }
+
     @Transactional
     public void deleteContacts(UUID id){
      ContactsEntity contacts =  contactsRepository.findById(id).orElseThrow(

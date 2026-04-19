@@ -4,7 +4,7 @@ import br.com.christian.contacts.Mappers.UserMapper;
 import br.com.christian.contacts.database.model.UserEntity;
 import br.com.christian.contacts.database.repository.IUserRepository;
 import br.com.christian.contacts.dto.request.UserRequestDto;
-import br.com.christian.contacts.dto.request.UserUpdateDto;
+import br.com.christian.contacts.dto.response.UserUpdateDto;
 import br.com.christian.contacts.exception.EmailAlreadyExistsException;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;

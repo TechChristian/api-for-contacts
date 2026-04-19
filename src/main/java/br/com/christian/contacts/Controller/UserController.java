@@ -4,7 +4,7 @@ import br.com.christian.contacts.Mappers.UserMapper;
 import br.com.christian.contacts.database.model.UserEntity;
 import br.com.christian.contacts.dto.response.MessageResponseDto;
 import br.com.christian.contacts.dto.request.UserRequestDto;
-import br.com.christian.contacts.dto.request.UserUpdateDto;
+import br.com.christian.contacts.dto.response.UserUpdateDto;
 import br.com.christian.contacts.dto.response.UserResponseDto;
 import br.com.christian.contacts.service.UserService;
 import jakarta.validation.Valid;

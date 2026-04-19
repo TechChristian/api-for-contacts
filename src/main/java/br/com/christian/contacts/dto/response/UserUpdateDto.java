@@ -1,4 +1,4 @@
-package br.com.christian.contacts.dto.request;
+package br.com.christian.contacts.dto.response;
 
 import jakarta.validation.constraints.Email;
 
