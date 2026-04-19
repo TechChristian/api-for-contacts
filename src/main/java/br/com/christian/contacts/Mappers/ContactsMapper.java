@@ -30,6 +30,7 @@ public class ContactsMapper {
                 .toList();
 
         return new ContactsResponseDto(
+                contacts.getId(),
                 contacts.getFullname(),
                 contacts.getEmail(),
                 contacts.getPhone(),

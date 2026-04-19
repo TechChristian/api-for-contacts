@@ -1,4 +1,4 @@
-package br.com.christian.contacts.dto.request;
+package br.com.christian.contacts.dto.response;
 
 public record MessageResponseDto(
         String message

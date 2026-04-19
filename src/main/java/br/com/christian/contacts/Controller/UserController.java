@@ -2,7 +2,7 @@ package br.com.christian.contacts.Controller;
 
 import br.com.christian.contacts.Mappers.UserMapper;
 import br.com.christian.contacts.database.model.UserEntity;
-import br.com.christian.contacts.dto.request.MessageResponseDto;
+import br.com.christian.contacts.dto.response.MessageResponseDto;
 import br.com.christian.contacts.dto.request.UserRequestDto;
 import br.com.christian.contacts.dto.request.UserUpdateDto;
 import br.com.christian.contacts.dto.response.UserResponseDto;

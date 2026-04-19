@@ -44,10 +44,17 @@ public class ContactsController {
         return ResponseEntity.ok(ContactsMapper.toResponseList(contacts));
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteContacts(@PathVariable UUID id){
+        contactsService.deleteContacts(id);
+        return ResponseEntity.noContent().build();
+    }
 
     @GetMapping
     public ResponseEntity<List<ContactsResponseDto>> listAllContacts() {
         List<ContactsEntity> contacts = contactsService.allContacts();
         return ResponseEntity.ok(ContactsMapper.toResponseList(contacts));
     }
+
+
 }

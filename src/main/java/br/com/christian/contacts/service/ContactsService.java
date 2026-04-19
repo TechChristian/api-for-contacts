@@ -57,7 +57,7 @@ public class ContactsService {
     @Transactional
     public List<ContactsEntity> searchForContactsById(UUID id){
 
-        UserEntity user = userRepository.findById(id).orElseThrow(
+        userRepository.findById(id).orElseThrow(
                 () -> new EntityNotFoundException("User not found with id: " + id)
         );
 
@@ -66,8 +66,14 @@ public class ContactsService {
        if(contacts.isEmpty()){
             throw new EntityNotFoundException("No contacts found for user with id: " + id);
         }
-
         return contacts;
+    }
+    @Transactional
+    public void deleteContacts(UUID id){
+     ContactsEntity contacts =  contactsRepository.findById(id).orElseThrow(
+                () -> new EntityNotFoundException("Contact not found with id: " + id)
+        );
+        contactsRepository.delete(contacts);
     }
 
     @Transactional

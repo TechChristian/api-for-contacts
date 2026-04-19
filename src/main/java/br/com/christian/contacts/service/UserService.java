@@ -5,13 +5,10 @@ import br.com.christian.contacts.database.model.UserEntity;
 import br.com.christian.contacts.database.repository.IUserRepository;
 import br.com.christian.contacts.dto.request.UserRequestDto;
 import br.com.christian.contacts.dto.request.UserUpdateDto;
-import br.com.christian.contacts.dto.response.UserResponseDto;
 import br.com.christian.contacts.exception.EmailAlreadyExistsException;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.apache.catalina.User;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -59,11 +56,12 @@ public class UserService {
         if (dto.email() != null && !dto.email().isBlank()) {
             user.setEmail(dto.email());
         }
-        if(dto.username() != null && !dto.username().isBlank()) {
+        if (dto.username() != null && !dto.username().isBlank()) {
             user.setUsername(dto.username());
         }
         return user;
     }
+
     @Transactional
     public List<UserEntity> listUsers() {
         return userRepository.findAll();

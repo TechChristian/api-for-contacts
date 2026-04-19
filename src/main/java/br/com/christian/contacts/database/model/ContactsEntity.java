@@ -16,6 +16,7 @@ public class ContactsEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
+
     @Column(name = "nome_completo", nullable = false)
     private String fullname;
 
