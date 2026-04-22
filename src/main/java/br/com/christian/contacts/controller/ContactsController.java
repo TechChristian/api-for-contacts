@@ -1,9 +1,12 @@
-package br.com.christian.contacts.Controller;
+package br.com.christian.contacts.controller;
 
 import br.com.christian.contacts.Mappers.ContactsMapper;
 import br.com.christian.contacts.database.model.ContactsEntity;
 import br.com.christian.contacts.dto.request.ContactsRequestDto;
 import br.com.christian.contacts.dto.response.ContactsResponseDto;
+import br.com.christian.contacts.dto.response.ContactsUpdateDto;
+import br.com.christian.contacts.dto.response.MessageResponseDto;
+import br.com.christian.contacts.openapi.ContactsOpenAPI;
 import br.com.christian.contacts.service.ContactsService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +21,7 @@ import java.util.UUID;
 @RequestMapping("v1/contacts")
 @RequiredArgsConstructor
 
-public class ContactsController {
+public class ContactsController implements ContactsOpenAPI {
     private final ContactsService contactsService;
 
     @PostMapping
@@ -31,7 +34,7 @@ public class ContactsController {
     }
 
     @GetMapping("/{phone}/{id}")
-    public ResponseEntity<ContactsResponseDto> searchPhoneByContacts(
+    public ResponseEntity<ContactsResponseDto> searchPhoneByUserID(
             @PathVariable String phone,
             @PathVariable UUID id) {
         ContactsEntity contacts = contactsService.searchByPhoneAndUser(phone, id);
@@ -42,6 +45,14 @@ public class ContactsController {
     public ResponseEntity<List<ContactsResponseDto>> searchContactsById(@PathVariable  UUID id){
         List<ContactsEntity> contacts = contactsService.searchForContactsById(id);
         return ResponseEntity.ok(ContactsMapper.toResponseList(contacts));
+    }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<MessageResponseDto> updateContacts(@PathVariable UUID id, @Valid @RequestBody ContactsUpdateDto dto){
+        contactsService.updateFieldsContacts(id, dto);
+        return ResponseEntity.ok(
+                new MessageResponseDto("Contacts updated successfully")
+        );
     }
 
     @DeleteMapping("/{id}")

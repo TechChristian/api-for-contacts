@@ -2,6 +2,7 @@ package br.com.christian.contacts.service;
 
 import br.com.christian.contacts.Mappers.UserMapper;
 import br.com.christian.contacts.database.model.UserEntity;
+import br.com.christian.contacts.database.repository.IContactsRepository;
 import br.com.christian.contacts.database.repository.IUserRepository;
 import br.com.christian.contacts.dto.request.UserRequestDto;
 import br.com.christian.contacts.dto.response.UserUpdateDto;
@@ -19,7 +20,7 @@ import java.util.UUID;
 
 public class UserService {
     private final IUserRepository userRepository;
-
+    private final IContactsRepository contactsRepository;
     @Transactional
     public UserEntity save(UserRequestDto create) {
         userRepository.findByEmail(create.email())
@@ -44,6 +45,7 @@ public class UserService {
         UserEntity user = userRepository.findById(id).orElseThrow(
                 () -> new EntityNotFoundException(String.format("User with id %s not found", id))
         );
+        contactsRepository.deleteUserContacts(id);
         userRepository.delete(user);
     }
 

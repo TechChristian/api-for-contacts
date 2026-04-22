@@ -7,8 +7,7 @@ import br.com.christian.contacts.database.repository.IContactsRepository;
 import br.com.christian.contacts.database.repository.IUserRepository;
 import br.com.christian.contacts.dto.request.ContactsRequestDto;
 import br.com.christian.contacts.dto.response.ContactsUpdateDto;
-import br.com.christian.contacts.dto.response.UserUpdateDto;
-import br.com.christian.contacts.exception.EmailAlreadyExistsException;
+import br.com.christian.contacts.exception.PhoneAlreadyExistsException;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.NonUniqueResultException;
 import jakarta.transaction.Transactional;
@@ -34,7 +33,7 @@ public class ContactsService {
         );
 
         if(contactsRepository.findByPhoneAndUsers_Id(create.phone(), create.userID()).isPresent()){
-            throw new IllegalArgumentException("Contact with phone number already exists: " + create.phone());
+            throw new PhoneAlreadyExistsException("Contact with phone number already exists: " + create.phone());
         }
 
         if(contactsRepository.findByEmailAndUsers_Id(create.email(), create.userID()).isPresent()){
