@@ -3,6 +3,9 @@ package br.com.christian.contacts.openapi;
 import br.com.christian.contacts.Handler.ErrorMessage;
 import br.com.christian.contacts.dto.request.ContactsRequestDto;
 import br.com.christian.contacts.dto.response.ContactsResponseDto;
+import br.com.christian.contacts.dto.response.ContactsUpdateDto;
+import br.com.christian.contacts.dto.response.MessageResponseDto;
+import br.com.christian.contacts.dto.response.UserUpdateDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -55,6 +58,16 @@ public interface ContactsOpenAPI {
     )
     public ResponseEntity<List<ContactsResponseDto>> searchContactsById(@PathVariable  UUID id);
 
+    @Operation(
+            summary = "Update fields by contacts",
+            description = "A feature to update specific fields for a contacts using their ID.",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Contact update successfully.", content = @Content(mediaType = "application/json", schema = @Schema(implementation = MessageResponseDto.class))),
+                    @ApiResponse(responseCode = "404", description = "Contact not found with ID: ", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class))),
+                    @ApiResponse(responseCode = "422", description = "Unprocessed entity", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class)))
+            }
+    )
+    public ResponseEntity<MessageResponseDto> updateContacts(@PathVariable UUID id, @Valid @RequestBody ContactsUpdateDto dto);
     @Operation(
             summary = "Contact delete",
             description = "This feature delete contact by id user.",

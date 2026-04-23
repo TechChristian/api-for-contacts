@@ -12,6 +12,7 @@ public record ContactsRequestDto (
         UUID userID,
 
         @NotBlank(message = "Full name is required")
+        @Size(min = 5, max = 50, message = "Full name must be between 5 and 50 characters long")
         String fullname,
 
         @NotBlank(message = "Email is required")
