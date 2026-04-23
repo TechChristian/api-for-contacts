@@ -51,7 +51,7 @@ public class ContactsService {
     @Transactional
     public ContactsEntity searchByPhoneAndUser(String phone, UUID id){
         return contactsRepository.findByPhoneAndUsers_Id(phone,id)
-                .orElseThrow(() -> new EntityNotFoundException("Contact not found with phone: " + phone));
+                .orElseThrow(() -> new EntityNotFoundException("Contact not found with the provided phone and user ID"));
     }
 
     //* Regra de Negocio : caso a lista esteja vazia é lancado um erro.

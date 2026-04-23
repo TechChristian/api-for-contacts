@@ -9,9 +9,11 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
+import java.util.UUID;
 
 public interface ContactsOpenAPI {
     @Operation(
@@ -33,4 +35,14 @@ public interface ContactsOpenAPI {
             }
     )
     public ResponseEntity<List<ContactsResponseDto>> listAllContacts();
+
+    @Operation(
+            summary = "Search contact by phone and user ID",
+            description = "This feature search contact by phone and user ID.",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Contact found successfully", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ContactsResponseDto.class))),
+                    @ApiResponse(responseCode = "404", description = "Contact not found with the provided phone and user ID", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class)))
+            }
+    )
+    public ResponseEntity<ContactsResponseDto> searchPhoneByUserID(@PathVariable String phone, @PathVariable UUID id);
 }
