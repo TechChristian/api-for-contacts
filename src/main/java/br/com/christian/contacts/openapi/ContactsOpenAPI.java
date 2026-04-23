@@ -45,4 +45,13 @@ public interface ContactsOpenAPI {
             }
     )
     public ResponseEntity<ContactsResponseDto> searchPhoneByUserID(@PathVariable String phone, @PathVariable UUID id);
+
+    @Operation(
+            summary = "List all contacts by user",
+            description = "This feature searches for contacts by ID.",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Contacts listed successfully", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ContactsResponseDto.class)))
+            }
+    )
+    public ResponseEntity<List<ContactsResponseDto>> searchContactsById(@PathVariable  UUID id);
 }
