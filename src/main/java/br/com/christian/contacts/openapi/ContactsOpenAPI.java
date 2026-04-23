@@ -11,6 +11,8 @@ import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import java.util.List;
+
 public interface ContactsOpenAPI {
     @Operation(
             summary = "Create a new contact",
@@ -22,4 +24,13 @@ public interface ContactsOpenAPI {
             }
     )
     public ResponseEntity<ContactsResponseDto> createContacts(@Valid @RequestBody ContactsRequestDto create);
+
+    @Operation(
+            summary = "List all contacts",
+            description = "This feature list all contacts.",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Contacts listed successfully", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ContactsResponseDto.class)))
+            }
+    )
+    public ResponseEntity<List<ContactsResponseDto>> listAllContacts();
 }
