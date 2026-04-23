@@ -18,7 +18,7 @@ import java.util.UUID;
 public interface ContactsOpenAPI {
     @Operation(
             summary = "Create a new contact",
-            description = "This feature a create new contact",
+            description = "This feature a create new contact.",
             responses = {
                     @ApiResponse(responseCode = "201", description = "Contact created successfully", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ContactsResponseDto.class))),
                     @ApiResponse(responseCode = "409", description = "Contact with phone number or email already exists: ", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class))),
@@ -54,4 +54,15 @@ public interface ContactsOpenAPI {
             }
     )
     public ResponseEntity<List<ContactsResponseDto>> searchContactsById(@PathVariable  UUID id);
+
+    @Operation(
+            summary = "Contact delete",
+            description = "This feature delete contact by id user.",
+            responses = {
+                    @ApiResponse(responseCode = "404", description = "Contact not found with ID: ", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorMessage.class))),
+                    @ApiResponse(responseCode = "204")
+            }
+    )
+    public ResponseEntity<Void> deleteContacts(@PathVariable UUID id);
+
 }
