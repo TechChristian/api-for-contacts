@@ -1,5 +1,6 @@
 package br.com.christian.contacts;
 
+import br.com.christian.contacts.Handler.ErrorMessage;
 import br.com.christian.contacts.dto.request.UserRequestDto;
 import br.com.christian.contacts.dto.response.UserResponseDto;
 import org.assertj.core.api.Assertions;
@@ -39,4 +40,43 @@ public class UsersTest {
         Assertions.assertThat(responseBody.username()).isEqualTo("christian");
         Assertions.assertThat(responseBody.roles().getRole().isEmpty());
     }
+
+    @Test
+    public void createUser_WithDuplicateEmailInformation_ReturnCode409(){
+        ErrorMessage errorMessage = testClient
+                .post()
+                .uri("v1/users")
+                .contentType(MediaType.APPLICATION_JSON)
+                .bodyValue(new UserRequestDto("jon@example.com", "jones", "123456789"))
+                .exchange()
+                .expectStatus().isEqualTo(409)
+                .expectBody(ErrorMessage.class)
+                .returnResult()
+                .getResponseBody();
+
+        Assertions.assertThat(errorMessage).isNotNull();
+        Assertions.assertThat(errorMessage.getStatus()).isEqualTo(409);
+        Assertions.assertThat(errorMessage.getPath()).isEqualTo("/v1/users");
+
+    }
+
+    @Test
+    public void createUser_WithInvalidEntityInformation_ReturnCode422(){
+        ErrorMessage errorMessage = testClient
+                .post()
+                .uri("v1/users")
+                .contentType(MediaType.APPLICATION_JSON)
+                .bodyValue(new UserRequestDto("jon@example", "jon", "123456789"))
+                .exchange()
+                .expectStatus().isEqualTo(422)
+                .expectBody(ErrorMessage.class)
+                .returnResult()
+                .getResponseBody();
+
+        Assertions.assertThat(errorMessage).isNotNull();
+        Assertions.assertThat(errorMessage.getStatus()).isEqualTo(422);
+        Assertions.assertThat(errorMessage.getPath()).isEqualTo("/v1/users");
+
+    }
+
 }
