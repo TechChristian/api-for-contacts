@@ -58,6 +58,10 @@ public class UsersTest {
         Assertions.assertThat(errorMessage.getStatus()).isEqualTo(409);
         Assertions.assertThat(errorMessage.getPath()).isEqualTo("/v1/users");
 
+
+
+
+
     }
 
     @Test
@@ -76,6 +80,24 @@ public class UsersTest {
         Assertions.assertThat(errorMessage).isNotNull();
         Assertions.assertThat(errorMessage.getStatus()).isEqualTo(422);
         Assertions.assertThat(errorMessage.getPath()).isEqualTo("/v1/users");
+
+    }
+
+    @Test
+    public void createUser_WithInformationPasswordInvalid(){
+        ErrorMessage errorMessage = testClient
+                .post()
+                .uri("v1/users")
+                .contentType(MediaType.APPLICATION_JSON)
+                .bodyValue(new UserRequestDto("chris@example.com", "chris", "123"))
+                .exchange()
+                .expectStatus().isEqualTo(422)
+                .expectBody(ErrorMessage.class)
+                .returnResult()
+                .getResponseBody();
+
+        Assertions.assertThat(errorMessage).isNotNull();
+        Assertions.assertThat(errorMessage.getStatus()).isEqualTo(422);
 
     }
 
