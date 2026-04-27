@@ -20,8 +20,8 @@ public class UsersTest {
     @Autowired
     WebTestClient testClient;
 
+    // Test -> POST
     @Test
-    // Test -> Create user with valid information
     public void createUser_WithValidInformation_ReturnCode201(){
         UserResponseDto responseBody = testClient
                 .post()
@@ -63,7 +63,8 @@ public class UsersTest {
 
     @Test
     public void createUser_WithInvalidData_Return422() {
-        ErrorMessage error = testClient.post()
+        ErrorMessage error = testClient
+                .post()
                 .uri("v1/users")
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(new UserRequestDto("chris@gmail", "chris", "123"))
@@ -77,4 +78,15 @@ public class UsersTest {
         Assertions.assertThat(error.getStatus()).isEqualTo(422);
     }
 
+    // Test -> GET
+    @Test
+    public void getAllUser_Return200(){
+          testClient
+                .get()
+                .uri("v1/users")
+                .exchange()
+                .expectStatus().isOk()
+                .expectBody()
+                .jsonPath("$").isArray();
+    }
 }
