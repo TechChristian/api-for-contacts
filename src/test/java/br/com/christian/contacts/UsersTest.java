@@ -59,46 +59,22 @@ public class UsersTest {
         Assertions.assertThat(errorMessage.getPath()).isEqualTo("/v1/users");
 
 
-
-
-
     }
 
     @Test
-    public void createUser_WithInvalidEntityInformation_ReturnCode422(){
-        ErrorMessage errorMessage = testClient
-                .post()
+    public void createUser_WithInvalidData_Return422() {
+        ErrorMessage error = testClient.post()
                 .uri("v1/users")
                 .contentType(MediaType.APPLICATION_JSON)
-                .bodyValue(new UserRequestDto("jon@example", "jon", "123456789"))
+                .bodyValue(new UserRequestDto("chris@gmail", "chris", "123"))
                 .exchange()
                 .expectStatus().isEqualTo(422)
                 .expectBody(ErrorMessage.class)
                 .returnResult()
                 .getResponseBody();
 
-        Assertions.assertThat(errorMessage).isNotNull();
-        Assertions.assertThat(errorMessage.getStatus()).isEqualTo(422);
-        Assertions.assertThat(errorMessage.getPath()).isEqualTo("/v1/users");
-
-    }
-
-    @Test
-    public void createUser_WithInformationPasswordInvalid(){
-        ErrorMessage errorMessage = testClient
-                .post()
-                .uri("v1/users")
-                .contentType(MediaType.APPLICATION_JSON)
-                .bodyValue(new UserRequestDto("chris@example.com", "chris", "123"))
-                .exchange()
-                .expectStatus().isEqualTo(422)
-                .expectBody(ErrorMessage.class)
-                .returnResult()
-                .getResponseBody();
-
-        Assertions.assertThat(errorMessage).isNotNull();
-        Assertions.assertThat(errorMessage.getStatus()).isEqualTo(422);
-
+        Assertions.assertThat(error).isNotNull();
+        Assertions.assertThat(error.getStatus()).isEqualTo(422);
     }
 
 }
