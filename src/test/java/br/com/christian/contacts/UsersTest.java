@@ -89,4 +89,28 @@ public class UsersTest {
                 .expectBody()
                 .jsonPath("$").isArray();
     }
+
+    @Test
+    public void getUserById_Return200(){
+        UserResponseDto responseBody = testClient
+                .post()
+                .uri("v1/users")
+                .contentType(MediaType.APPLICATION_JSON)
+                .bodyValue(new UserRequestDto("chris@example.com", "chris", "123455666"))
+                .exchange()
+                .expectStatus().isCreated()
+                .expectBody(UserResponseDto.class)
+                .returnResult()
+                .getResponseBody();
+
+        testClient
+                .get()
+                .uri("v1/users/{id}", responseBody.id())
+                .exchange()
+                .expectStatus().isOk()
+                .expectBody()
+                .jsonPath("$.id").isEqualTo(responseBody.id())
+                .jsonPath("$.email").isEqualTo(responseBody.email())
+                .jsonPath("$.username").isEqualTo(responseBody.username());
+    }
 }
