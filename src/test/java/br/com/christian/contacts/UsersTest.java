@@ -12,6 +12,8 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
+import java.util.UUID;
+
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureWebTestClient
 @Sql(scripts = "/sql/users/users-insert.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
@@ -105,12 +107,28 @@ public class UsersTest {
 
         testClient
                 .get()
-                .uri("v1/users/{id}", responseBody.id())
+                .uri("/v1/users/{id}", responseBody.id())
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody()
                 .jsonPath("$.id").isEqualTo(responseBody.id())
                 .jsonPath("$.email").isEqualTo(responseBody.email())
                 .jsonPath("$.username").isEqualTo(responseBody.username());
+    }
+
+    @Test
+    public void getUser_ById_NotFound_Return404(){
+      ErrorMessage error = testClient
+                .get()
+                .uri("/v1/users/{id}", UUID.randomUUID())
+                .exchange()
+                .expectStatus().isNotFound()
+                .expectBody(ErrorMessage.class)
+                .returnResult()
+                .getResponseBody();
+
+      Assertions.assertThat(error).isNotNull();
+      Assertions.assertThat(error.getStatus()).isEqualTo(404);
+
     }
 }
