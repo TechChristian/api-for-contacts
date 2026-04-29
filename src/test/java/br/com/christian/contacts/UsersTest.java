@@ -131,4 +131,37 @@ public class UsersTest {
       Assertions.assertThat(error.getStatus()).isEqualTo(404);
 
     }
+
+    @Test
+    public void deleteUser_ById_Return204(){
+        UserResponseDto responseBody = testClient
+                .post()
+                .uri("v1/users")
+                .contentType(MediaType.APPLICATION_JSON)
+                .bodyValue(new UserRequestDto("chris@example.com", "chris", "12345467899"))
+                .exchange()
+                .expectStatus().isCreated()
+                .expectBody(UserResponseDto.class)
+                .returnResult()
+                .getResponseBody();
+
+        testClient
+                .delete()
+                .uri("/v1/users/{id}", responseBody.id())
+                .exchange()
+                .expectStatus().isNoContent();
+
+        ErrorMessage error = testClient
+                .get()
+                .uri("/v1/users/{id}", responseBody.id())
+                .exchange()
+                .expectStatus().isNotFound()
+                .expectBody(ErrorMessage.class)
+                .returnResult()
+                .getResponseBody();
+
+        Assertions.assertThat(error).isNotNull();
+        Assertions.assertThat(error.getStatus()).isEqualTo(404);
+
+    }
 }
