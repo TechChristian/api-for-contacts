@@ -2,7 +2,10 @@ package br.com.christian.contacts;
 
 import br.com.christian.contacts.Handler.ErrorMessage;
 import br.com.christian.contacts.dto.request.UserRequestDto;
+import br.com.christian.contacts.dto.response.MessageResponseDto;
 import br.com.christian.contacts.dto.response.UserResponseDto;
+import br.com.christian.contacts.dto.response.UserUpdateDto;
+import org.apache.catalina.User;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -129,6 +132,48 @@ public class UsersTest {
 
       Assertions.assertThat(error).isNotNull();
       Assertions.assertThat(error.getStatus()).isEqualTo(404);
+
+    }
+
+    @Test
+    public void updateFields_ById_Return200(){
+        UserResponseDto responseBody = testClient
+                .post()
+                .uri("v1/users")
+                .contentType(MediaType.APPLICATION_JSON)
+                .bodyValue(new UserRequestDto("chris@example.com", "chris", "12345467899"))
+                .exchange()
+                .expectStatus().isCreated()
+                .expectBody(UserResponseDto.class)
+                .returnResult()
+                .getResponseBody();
+
+        MessageResponseDto response = testClient
+                .patch()
+                .uri("/v1/users/{id}", responseBody.id())
+                .contentType(MediaType.APPLICATION_JSON)
+                .bodyValue(new UserUpdateDto("chrisjones@example.com", "jones"))
+                .exchange()
+                .expectStatus().isOk()
+                .expectBody(MessageResponseDto.class)
+                .returnResult()
+                .getResponseBody();
+
+        Assertions.assertThat(response.message()).isEqualTo("User updated successfully");
+
+        UserResponseDto responseBodyUpdated = testClient
+                .get()
+                .uri("/v1/users/{id}", responseBody.id())
+                .exchange()
+                .expectStatus().isOk()
+                .expectBody(UserResponseDto.class)
+                .returnResult()
+                .getResponseBody();
+
+        Assertions.assertThat(responseBodyUpdated).isNotNull();
+        Assertions.assertThat(responseBodyUpdated.id()).isEqualTo(responseBody.id());
+        Assertions.assertThat(responseBodyUpdated.email()).isEqualTo("chrisjones@example.com");
+        Assertions.assertThat(responseBodyUpdated.username()).isEqualTo("jones");
 
     }
 
