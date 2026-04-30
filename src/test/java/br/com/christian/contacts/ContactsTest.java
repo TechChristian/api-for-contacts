@@ -1,5 +1,6 @@
 package br.com.christian.contacts;
 
+import br.com.christian.contacts.Handler.ErrorMessage;
 import br.com.christian.contacts.dto.request.ContactsRequestDto;
 import br.com.christian.contacts.dto.request.UserRequestDto;
 import br.com.christian.contacts.dto.response.ContactsResponseDto;
@@ -58,7 +59,30 @@ public class ContactsTest {
     }
 
     @Test
-    public void createContacts_WithInvalidInformation_Return400(){
+    public void createContacts_WithDuplicateEmail_Return409(){
+        UserResponseDto user = createUser();
 
+     testClient
+                .post()
+                .uri("v1/contacts")
+                .contentType(MediaType.APPLICATION_JSON)
+                .bodyValue(new ContactsRequestDto(user.id(), "cris lopes", "duplicated@gmail.com" ,"11999999999"))
+                .exchange()
+                .expectStatus().isCreated();
+
+        ErrorMessage error = testClient
+                .post()
+                .uri("v1/contacts")
+                .contentType(MediaType.APPLICATION_JSON)
+                .bodyValue(new ContactsRequestDto(user.id(), "jon lopes", "duplicated@gmail.com" ,"11888888888"))
+                .exchange()
+                .expectStatus().isEqualTo(409)
+                .expectBody(ErrorMessage.class)
+                .returnResult()
+                .getResponseBody();
+
+        Assertions.assertThat(error).isNotNull();
+        Assertions.assertThat(error.getStatus()).isEqualTo(409);
+        Assertions.assertThat(error.getPath()).isEqualTo("/v1/contacts");
     }
 }
