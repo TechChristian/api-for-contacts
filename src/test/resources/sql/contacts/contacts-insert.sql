@@ -1,0 +1,1 @@
+INSERT INTO contacts(userID, fullname, email, phone) VALUES (UUID(), 'cris lopes', 'cris@example.com', '123456789');

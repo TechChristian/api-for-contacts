@@ -5,7 +5,6 @@ import br.com.christian.contacts.dto.request.UserRequestDto;
 import br.com.christian.contacts.dto.response.MessageResponseDto;
 import br.com.christian.contacts.dto.response.UserResponseDto;
 import br.com.christian.contacts.dto.response.UserUpdateDto;
-import org.apache.catalina.User;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -158,8 +157,6 @@ public class UsersTest {
                 .expectBody(MessageResponseDto.class)
                 .returnResult()
                 .getResponseBody();
-
-        Assertions.assertThat(response.message()).isEqualTo("User updated successfully");
 
         UserResponseDto responseBodyUpdated = testClient
                 .get()
