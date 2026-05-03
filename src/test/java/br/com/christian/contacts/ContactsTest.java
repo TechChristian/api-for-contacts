@@ -5,7 +5,7 @@ import br.com.christian.contacts.dto.request.ContactsRequestDto;
 import br.com.christian.contacts.dto.request.UserRequestDto;
 import br.com.christian.contacts.dto.response.ContactsResponseDto;
 import br.com.christian.contacts.dto.response.UserResponseDto;
-import org.apache.catalina.User;
+import br.com.christian.contacts.service.UserService;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +22,10 @@ public class ContactsTest {
 
     @Autowired
     WebTestClient testClient;
+    @Autowired
+    private UserService userService;
 
+    // * cria usuario para testes
     private UserResponseDto createUser() {
         return
                 testClient
@@ -133,5 +136,41 @@ public class ContactsTest {
         Assertions.assertThat(error).isNotNull();
         Assertions.assertThat(error.getStatus()).isEqualTo(422);
         Assertions.assertThat(error.getPath()).isEqualTo("/v1/contacts");
+    }
+
+    @Test
+    public void deleteContacts_ReturnCode204(){
+        UserResponseDto user = createUser();
+
+        ContactsResponseDto responseBody = testClient
+                .post()
+                .uri("v1/contacts")
+                .contentType(MediaType.APPLICATION_JSON)
+                .bodyValue(new ContactsRequestDto(user.id(), "cris lopes", "cristian@example.com", "11999999999"))
+                .exchange()
+                .expectStatus().isCreated()
+                .expectBody(ContactsResponseDto.class)
+                .returnResult()
+                .getResponseBody();
+
+        testClient
+                .delete()
+                .uri("v1/contacts/{id}", responseBody.id())
+                .exchange()
+                .expectStatus().isNoContent();
+
+        ErrorMessage error = testClient
+                .get()
+                .uri("v1/contacts/{id}", responseBody.id())
+                .exchange()
+                .expectStatus().isNotFound()
+                .expectBody(ErrorMessage.class)
+                .returnResult()
+                .getResponseBody();
+
+        Assertions.assertThat(error).isNotNull();
+        Assertions.assertThat(error.getStatus()).isEqualTo(404);
+        Assertions.assertThat(error.getPath()).isEqualTo("/v1/contacts/" + responseBody.id());
+
     }
 }
