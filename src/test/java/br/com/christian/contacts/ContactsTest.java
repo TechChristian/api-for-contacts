@@ -85,4 +85,32 @@ public class ContactsTest {
         Assertions.assertThat(error.getStatus()).isEqualTo(409);
         Assertions.assertThat(error.getPath()).isEqualTo("/v1/contacts");
     }
+
+    @Test
+    public void createContacts_WithDuplicatePhone_Return409(){
+        UserResponseDto user = createUser();
+
+        testClient
+                .post()
+                .uri("v1/contacts")
+                .contentType(MediaType.APPLICATION_JSON)
+                .bodyValue(new ContactsRequestDto(user.id(), "cris lopes", "chris@gmail.com" ,"11999999999"))
+                .exchange()
+                .expectStatus().isCreated();
+
+        ErrorMessage error = testClient
+                .post()
+                .uri("v1/contacts")
+                .contentType(MediaType.APPLICATION_JSON)
+                .bodyValue(new ContactsRequestDto(user.id(), "jon lopes", "jon@gmail.com" , "11999999999"))
+                .exchange()
+                .expectStatus().isEqualTo(409)
+                .expectBody(ErrorMessage.class)
+                .returnResult()
+                .getResponseBody();
+
+        Assertions.assertThat(error).isNotNull();
+        Assertions.assertThat(error.getStatus()).isEqualTo(409);
+        Assertions.assertThat(error.getPath()).isEqualTo("/v1/contacts");
+    }
 }
