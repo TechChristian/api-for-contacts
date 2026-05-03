@@ -5,6 +5,7 @@ import br.com.christian.contacts.dto.request.ContactsRequestDto;
 import br.com.christian.contacts.dto.request.UserRequestDto;
 import br.com.christian.contacts.dto.response.ContactsResponseDto;
 import br.com.christian.contacts.dto.response.UserResponseDto;
+import org.apache.catalina.User;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -111,6 +112,26 @@ public class ContactsTest {
 
         Assertions.assertThat(error).isNotNull();
         Assertions.assertThat(error.getStatus()).isEqualTo(409);
+        Assertions.assertThat(error.getPath()).isEqualTo("/v1/contacts");
+    }
+
+    @Test
+    public void createContacts_WithFieldsInvalid_Return422(){
+        UserResponseDto user = createUser();
+
+      ErrorMessage error =  testClient
+                .post()
+                .uri("v1/contacts")
+                .contentType(MediaType.APPLICATION_JSON)
+                .bodyValue(new ContactsRequestDto(user.id(), "", "chris@gmail.com", "982828"))
+                .exchange()
+                .expectStatus().isEqualTo(422)
+                .expectBody(ErrorMessage.class)
+                .returnResult()
+                .getResponseBody();
+
+        Assertions.assertThat(error).isNotNull();
+        Assertions.assertThat(error.getStatus()).isEqualTo(422);
         Assertions.assertThat(error.getPath()).isEqualTo("/v1/contacts");
     }
 }
