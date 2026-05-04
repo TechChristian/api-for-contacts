@@ -32,3 +32,4 @@ private/
 src/main/resources/application.yml
 ### VS Code ###
 .vscode/
+compose/.env
