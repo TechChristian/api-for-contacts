@@ -43,6 +43,26 @@ endpoints disponíveis nesta aplicação:
 | `GET` | `/v1/users/{phone}/{id}` | Recurso para buscar um contato pelo telefone e id do usuário |
 | `DELETE` | `/v1/users/{id}` | Recurso para deletar um contato pelo ID |
 
+## 🐳 Rodando com Docker
+
+1. Crie a imagem:
+
+```
+docker build -t {image_name} .
+```
+2. Suba os containers: 
+
+```
+docker-compose up --build
+```
+
+3. Verifique os containers: 
+
+```
+docker ps
+```
+
+
 
 1. A API estará disponível em:
 
