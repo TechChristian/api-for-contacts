@@ -61,6 +61,7 @@ public class ContactsController implements ContactsOpenAPI {
         return ResponseEntity.noContent().build();
     }
 
+
     @GetMapping
     public ResponseEntity<List<ContactsResponseDto>> listAllContacts() {
         List<ContactsEntity> contacts = contactsService.allContacts();

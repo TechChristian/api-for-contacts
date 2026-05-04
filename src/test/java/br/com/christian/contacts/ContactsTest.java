@@ -139,7 +139,38 @@ public class ContactsTest {
     }
 
     @Test
-    public void deleteContacts_ReturnCode204(){
+    public void getContacts_ByPhoneAndUserId_Return200() {
+        UserResponseDto user = createUser();
+
+        ContactsResponseDto created = testClient
+                .post()
+                .uri("v1/contacts")
+                .contentType(MediaType.APPLICATION_JSON)
+                .bodyValue(new ContactsRequestDto(user.id(), "cris lopes", "cristian@example.com", "11999999999"))
+                .exchange()
+                .expectStatus().isCreated()
+                .expectBody(ContactsResponseDto.class)
+                .returnResult()
+                .getResponseBody();
+
+     ContactsResponseDto response =  testClient
+                .get()
+                .uri("v1/contacts/{phone}/{id}", created.phone(), user.id())
+                .exchange()
+                .expectStatus().isOk()
+                .expectBody(ContactsResponseDto.class)
+                .returnResult()
+                .getResponseBody();
+
+        Assertions.assertThat(response).isNotNull();
+        Assertions.assertThat(response.id()).isEqualTo(created.id());
+        Assertions.assertThat(response.fullname()).isEqualTo("cris lopes");
+        Assertions.assertThat(response.email()).isEqualTo("cristian@example.com");
+        Assertions.assertThat(response.phone()).isEqualTo("11999999999");
+    }
+
+    @Test
+    public void deleteContacts_ReturnCode404(){
         UserResponseDto user = createUser();
 
         ContactsResponseDto responseBody = testClient
@@ -173,4 +204,6 @@ public class ContactsTest {
         Assertions.assertThat(error.getPath()).isEqualTo("/v1/contacts/" + responseBody.id());
 
     }
+
+
 }
