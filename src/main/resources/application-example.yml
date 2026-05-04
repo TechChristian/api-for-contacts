@@ -1,0 +1,24 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: contacts
+  datasource:
+    url: jdbc:mysql://localhost:3306/contacts_db?createDatabaseIfNotExist=true
+    username: { USERNAME_DATABASE }
+    password: { PASSWORD_DATABASE }
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+springdoc:
+  api-docs:
+    path: /contacts-docs
+  swagger-ui:
+    path: /contacts-docs.html
+  packages-to-scan: br.com.christian.contacts.controller
